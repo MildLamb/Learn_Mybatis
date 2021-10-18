@@ -64,3 +64,26 @@ CREATE TABLE `user`(
     </environments>
 </configuration>
 ```
+- 编写一个工具类，用来获取SqlSession
+```java
+//SqlSessionFactory --> SqlSession
+public class MybatisUtils {
+
+    private static SqlSessionFactory sqlSessionFactory;
+
+    static{
+        try {
+            //通过核心配置文件 获取SqlSessionFactory对象
+            String resource = "mybatis-config.xml";
+            InputStream in = Resources.getResourceAsStream(resource);
+            sqlSessionFactory = new SqlSessionFactoryBuilder().build(in);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static SqlSession getSqlSession(){
+        return sqlSessionFactory.openSession();
+    }
+}
+```
