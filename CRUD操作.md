@@ -8,6 +8,8 @@
 - update
 - delete
 
+**注意增删改需要提交事务**  
+
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper
