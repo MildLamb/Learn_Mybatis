@@ -38,3 +38,43 @@
     </delete>
 </mapper>
 ```
+
+### 万能的Map集合
+假设，我们实体类或者数据库中的表，字段或者参数过多，但又不需要用到全部，可以考虑使用Map集合作为参数  
+```java
+int updateUser2(Map<String,Object> map);
+```
+```xml
+<!-- 使用map集合#{}中使用map的key即可 -->
+<update id="updateUser2" parameterType="map">
+update mybatis.user set name = #{username},pwd = #{password} where id = #{uid};
+</update>
+```
+```java
+@Test
+    public void test6(){
+        Map<String, Object> map = new HashMap<String, Object>();
+        map.put("username","QSJ");
+        map.put("uid",4);
+        mapper.updateUser2(map);
+    }
+```
+
+### 模糊查询
+- Java代码执行的时候传递%
+```java
+@Test
+    public void test7(){
+        List<User> kind = mapper.getUserLike("%kind%");
+        for (User user : kind) {
+            System.out.println(user);
+        }
+        sqlSession.close();
+    }
+```
+- 在sql拼接中使用通配符
+```xml
+<select id="getUserLike" parameterType="String" resultType="com.mildlamb.pojo.User">
+        select * from mybatis.user where name like "%"#{name}"%"
+</select>
+```
