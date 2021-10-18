@@ -43,7 +43,7 @@ CREATE TABLE `user`(
 ```
 
 - 创建模块
-- 编写Mybatis核心配置文件
+### 2.2.编写Mybatis核心配置文件
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE configuration
@@ -86,4 +86,45 @@ public class MybatisUtils {
         return sqlSessionFactory.openSession();
     }
 }
+```
+
+### 2.3.编写代码
+- 实体类
+- Dao接口
+- 接口实现类(由原来的impl转变为一个mapper.xml的配置文件)
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mildlamb.dao.UserDao">
+    <select id="getUserList" resultType="com.mildlamb.pojo.User">
+        select * from mybatis.user;
+    </select>
+</mapper>
+```
+
+### 2.4.测试
+- Maven静态资源过滤问题
+```xml
+<build>
+<resources>
+    <resource>
+        <directory>src/main/java</directory>
+        <includes>
+            <include>**/*.properties</include>
+            <include>**/*.xml</include>
+        </includes>
+        <filtering>true</filtering>
+    </resource>
+    <resource>
+        <directory>src/main/resources</directory>
+        <includes>
+            <include>**/*.properties</include>
+            <include>**/*.xml</include>
+        </includes>
+        <filtering>true</filtering>
+    </resource>
+</resources>
+</build>
 ```
