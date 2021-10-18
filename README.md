@@ -128,3 +128,10 @@ public class MybatisUtils {
 </resources>
 </build>
 ```
+
+- 1 字节的 UTF-8 序列的字节 1 无效 (pom.xml中添加如下代码)
+```xml
+<properties>
+	<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+</properties>
+```
