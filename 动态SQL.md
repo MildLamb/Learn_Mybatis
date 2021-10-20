@@ -105,3 +105,20 @@ select * from blog
         </where>
     </select>
 ```
+- set | set 元素可以用于动态包含需要更新的列，忽略其它不更新的列。set 元素会动态地在行首插入 SET 关键字，并会删掉额外的逗号
+```xml
+<update id="updateBlog" parameterType="map">
+        update blog
+        <set>
+            <if test="tit != null">
+                title = #{tit},
+            </if>
+            <if test="author != null">
+                author = #{author},
+            </if>
+        </set>
+        <where>
+            id = #{id}
+        </where>
+    </update>
+```
