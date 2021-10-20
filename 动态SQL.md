@@ -49,6 +49,45 @@ public void test2(){
 ```
 
 ## choose、when、otherwise
+choose、when、otherwise类似于java的switch、case，只会有一个生效
+- 接口
+```java
+List<Blog> queryBlogChoose(Map<String,String> map);
+```
+- mapper.xml
+```xml
+<select id="queryBlogChoose" resultType="blog" parameterType="map">
+select * from blog
+<where>
+    <choose>
+	<when test="tit != null">
+	    title = #{tit}
+	</when>
+	<when test="author != null">
+	    and author = #{author}
+	</when>
+	<otherwise>
+	    and views > #{views}
+	</otherwise>
+    </choose>
+</where>
+</select>
+```
+- 测试类
+```java
+@Test
+    public void test3(){
+        Map<String,String> map = new HashMap<String, String>();
+//        map.put("tit","生命就是我们");
+        map.put("author","纳尔");
+        map.put("views","900");
+        List<Blog> blogs = blogMapper.queryBlogChoose(map);
+        for (Blog blog : blogs) {
+            System.out.println(blog);
+        }
+        sqlSession.close();
+    }
+```
 
 
 ## trim、where、set
