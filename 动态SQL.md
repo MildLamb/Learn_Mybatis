@@ -172,6 +172,27 @@ select * from blog
 ```java
 List<Blog> queryBlogForeach(Map map);
 ```
+
+- mapper.xml
+```xml
+<select id="queryBlogForeach" resultType="blog" parameterType="map">
+        select * from blog
+	<!-- 第一种遍历方式：Preparing: select * from blog WHERE ( id = ? or id = ? or id = ? ) -->
+        <where>
+            <foreach collection="ids" item="bid" open="and (" close=")" separator="or ">
+                id = #{bid}
+            </foreach>
+        </where>
+	<!-- 第二种遍历方式：Preparing: select * from blog WHERE id in ( ? , ? , ? )  -->
+<!--  <where>-->
+<!--        <where>-->
+<!--            <foreach collection="ids" item="bid" open="id in (" close=")" separator=",">-->
+<!--                #{bid}-->
+<!--            </foreach>-->
+<!--        </where>-->
+    </select>
+```
+
 - mapper.xml
 ```xml
 <select id="queryBlogForeach" resultType="blog" parameterType="map">
@@ -179,7 +200,7 @@ List<Blog> queryBlogForeach(Map map);
 	<!-- 第一种遍历方式：Preparing: select * from blog WHERE ( id = ? or id = ? or id = ? ) -->
 	<where>
 		<foreach collection="ids" item="bid" open="and (" close=")" separator="or ">
-					id = #{bid}
+			id = #{bid}
 		</foreach>
 	</where>
 		<!-- 第二种遍历方式：Preparing: select * from blog WHERE id in ( ? , ? , ? )  -->
