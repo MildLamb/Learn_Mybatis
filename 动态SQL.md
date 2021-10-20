@@ -165,3 +165,45 @@ select * from blog
 注意事项：
 - 最好基于单表来定义sql片段
 - sql片段中最好不要有where标签
+
+## foreach
+动态 SQL 的另一个常见使用场景是对集合进行遍历（尤其是在构建 IN 条件语句的时候  
+- 接口
+```java
+List<Blog> queryBlogForeach(Map map);
+```
+- mapper.xml
+```xml
+<select id="queryBlogForeach" resultType="blog" parameterType="map">
+		select * from blog
+		<!-- 第一种遍历方式：Preparing: select * from blog WHERE ( id = ? or id = ? or id = ? ) -->
+		<where>
+				<foreach collection="ids" item="bid" open="and (" close=")" separator="or ">
+						id = #{bid}
+				</foreach>
+		</where>
+		<!-- 第二种遍历方式：Preparing: select * from blog WHERE id in ( ? , ? , ? )  -->
+<!--        <where>-->
+<!--            <foreach collection="ids" item="bid" open="id in (" close=")" separator=",">-->
+<!--                #{bid}-->
+<!--            </foreach>-->
+<!--        </where>-->
+</select>
+```
+- 测试类
+```java
+@Test
+    public void test5(){
+        Map map = new HashMap();
+        List list = new ArrayList();
+        list.add(1);
+        list.add(2);
+        list.add(3);
+        map.put("ids",list);
+        List<Blog> blogs = blogMapper.queryBlogForeach(map);
+        for (Blog blog : blogs) {
+            System.out.println(blog);
+        }
+        sqlSession.close();
+    }
+```
