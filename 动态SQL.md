@@ -183,11 +183,11 @@ List<Blog> queryBlogForeach(Map map);
 		</foreach>
 	</where>
 		<!-- 第二种遍历方式：Preparing: select * from blog WHERE id in ( ? , ? , ? )  -->
-<!--        <where>-->
-<!--            <foreach collection="ids" item="bid" open="id in (" close=")" separator=",">-->
-<!--                #{bid}-->
-<!--            </foreach>-->
-<!--        </where>-->
+<!--  <where>-->
+<!--     <foreach collection="ids" item="bid" open="id in (" close=")" separator=",">-->
+<!--         #{bid}-->
+<!--     </foreach>-->
+<!--  </where>-->
 </select>
 ```
 - 测试类
