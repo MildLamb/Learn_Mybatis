@@ -143,3 +143,25 @@ select * from blog
   ...
 </trim>
 ```
+
+## SQL片段 <sql>
+- 使用sql标签抽取公共的部分  
+```xml
+<sql id="my_if">
+	<if test="tit != null">
+		and title = #{tit}
+	</if>
+	<if test="author != null">
+		and author = #{author}
+	</if>
+</sql>
+```
+- 在需要使用的地方使用include标签引用即可
+```xml
+<where>
+	<include refid="my_if"></include>
+</where>
+```
+注意事项：
+- 最好基于单表来定义sql片段
+- sql片段中最好不要有where标签
