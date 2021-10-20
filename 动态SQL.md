@@ -47,3 +47,22 @@ public void test2(){
     sqlSession.close();
 }
 ```
+
+## choose、when、otherwise
+
+
+## trim、where、set
+- where | where 元素只会在子元素返回任何内容的情况下才插入 “WHERE” 子句。而且，若子句的开头为 “AND” 或 “OR”，where 元素也会将它们去除。
+```xml
+<select id="queryBlogIf" resultType="blog" parameterType="map">
+        select * from blog
+        <where>
+            <if test="tit != null">
+                and title = #{tit}
+            </if>
+            <if test="author != null">
+                and author = #{author}
+            </if>
+        </where>
+    </select>
+```
