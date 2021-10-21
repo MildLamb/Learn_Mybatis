@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mildlamb.dao.ChampionMapper">
+
+    <!-- 按照查询嵌套处理 -->
+
+    <resultMap id="ChamMaster" type="champion">
+        <result property="id" column="id"></result>
+        <result property="name" column="name"></result>
+        <!-- 复杂的属性，我们需要单独处理
+            property:实体类的属性名
+            column:对应数据库中的列
+            javaType:属性对应的Java类型
+            select:查询该类型的方法的名称
+         -->
+        <association property="master" column="mid" javaType="master" select="getMaster"></association>
+    </resultMap>
+
+    <select id="getChampions" resultMap="ChamMaster">
+        select * from champion
+    </select>
+
+    <select id="getMaster" resultType="master">
+        select * from master where id = #{mid}
+    </select>
+
+    <!-- ====================================================== -->
+
+    <!-- 按照结果嵌套处理 -->
+    <resultMap id="ChamMaster2" type="champion">
+        <result property="id" column="id"></result>
+        <result property="name" column="name"></result>
+        <association property="master" javaType="master">
+            <result property="name" column="mname"></result>
+            <result property="id" column="mid"></result>
+        </association>
+    </resultMap>
+
+    <select id="getChampions2" resultMap="ChamMaster2">
+        select c.*,m.name as mname from champion c,master m where c.mid = m.id
+    </select>
+</mapper>
